@@ -68,7 +68,6 @@ export default function Home() {
     itineraryBase64?: string;
     fixtureId?: string;
   }) => {
-    // If in Agent Mode or Offline: queue application directly into IndexedDB
     if (isAgentMode || !isOnline) {
       try {
         await saveToQueue(payload);
@@ -86,7 +85,6 @@ export default function Home() {
       }
     }
 
-    // Standard Online Multimodal Processing
     setStage("processing");
     setErrorMessage(null);
 
@@ -166,76 +164,86 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#090d16] text-slate-100 antialiased">
+    <div className="min-h-screen flex flex-col bg-[#090d16] text-slate-100 antialiased overflow-x-hidden">
       <Header onOpenArchitecture={() => setIsArchModalOpen(true)} />
 
-      {/* Network & DPI Status Bar */}
-      <NetworkStatusBar
-        isOnline={isOnline}
-        is2GMode={is2GMode}
-        onToggle2G={(val) => setIs2GMode(val)}
-        isAgentMode={isAgentMode}
-        onToggleAgent={(val) => setIsAgentMode(val)}
-        queueCount={queueCount}
-        onSyncQueue={handleSyncAll}
-        isSyncing={isSyncing}
-      />
+      {/* Network & DPI Status Bar - Edge-to-edge on mobile */}
+      <div className="w-full">
+        <NetworkStatusBar
+          isOnline={isOnline}
+          is2GMode={is2GMode}
+          onToggle2G={(val) => setIs2GMode(val)}
+          isAgentMode={isAgentMode}
+          onToggleAgent={(val) => setIsAgentMode(val)}
+          queueCount={queueCount}
+          onSyncQueue={handleSyncAll}
+          isSyncing={isSyncing}
+        />
+      </div>
 
-      {/* Main Container: Edge-to-Edge on mobile, constrained on desktop */}
-      <main className="flex-1 w-full px-3 py-4 md:max-w-7xl md:mx-auto md:px-6 lg:px-8 md:py-10 space-y-6 md:space-y-8">
-        {/* Hero Banner: Compact on Mobile */}
-        <section className="text-center space-y-3 md:space-y-4 max-w-3xl mx-auto pt-1 md:pt-2 px-2 md:px-0">
-          <div className="inline-flex items-center space-x-1.5 md:space-x-2 px-2.5 py-1 md:px-3 md:py-1.5 rounded-full bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-emerald-500/10 border border-amber-500/30 text-amber-300 text-[11px] md:text-xs font-semibold shadow-inner">
-            <Sparkles className="w-3 h-3 md:w-3.5 md:h-3.5 text-amber-400 shrink-0" />
-            <span className="truncate">Intent-to-Action Multimodal Pipeline • DPI Ready</span>
+      {/* Main Container: Bleeds edge-to-edge on mobile, constrained on desktop */}
+      <main className="flex-1 w-full px-0 sm:px-4 md:max-w-7xl md:mx-auto md:px-6 lg:px-8 py-6 md:py-10 space-y-8 md:space-y-10">
+        
+        {/* Hero Banner: Hyper-minimal on mobile */}
+        <section className="text-center space-y-4 md:space-y-6 max-w-3xl mx-auto px-5 md:px-0 mt-2 md:mt-0">
+          <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-emerald-500/10 border border-amber-500/30 text-amber-300 text-xs font-semibold shadow-inner">
+            <Sparkles className="w-4 h-4 text-amber-400 shrink-0" />
+            <span className="truncate">Intent-to-Action Pipeline • DPI Ready</span>
           </div>
 
-          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-white leading-tight">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white leading-tight">
             Indian e-Visa Application, <br className="hidden sm:inline" />
-            <span className="gradient-text-saffron">Automated &amp; Frictionless.</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-500">
+              Automated &amp; Frictionless.
+            </span>
           </h1>
 
-          <p className="text-xs sm:text-sm md:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-sm md:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed px-2">
             Drop raw traveler documents. Our multimodal pipeline parses identity bio-pages, semantically classifies the right visa sub-category, and validates against Indian immigration schemas.
           </p>
 
-          {/* Quick Metrics: Compact wrap */}
-          <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-6 md:gap-8 pt-1 text-[11px] md:text-xs font-medium text-slate-400">
-            <div className="flex items-center space-x-1 bg-slate-900/60 md:bg-transparent px-2 py-1 md:p-0 rounded-md border border-slate-800/80 md:border-none">
-              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+          {/* Quick Metrics: Stacked full-width on mobile, pill-row on desktop */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-6 pt-4 text-[13px] md:text-sm font-medium text-slate-400">
+            <div className="flex items-center justify-center space-x-2 bg-slate-900 md:bg-transparent w-full sm:w-auto px-4 py-3 md:p-0 rounded-xl border border-slate-800 md:border-none">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
               <span>Zero Manual Forms</span>
             </div>
-            <div className="flex items-center space-x-1 bg-slate-900/60 md:bg-transparent px-2 py-1 md:p-0 rounded-md border border-slate-800/80 md:border-none">
-              <CheckCircle2 className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+            <div className="flex items-center justify-center space-x-2 bg-slate-900 md:bg-transparent w-full sm:w-auto px-4 py-3 md:p-0 rounded-xl border border-slate-800 md:border-none">
+              <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
               <span>Offline PWA / 2G</span>
             </div>
-            <div className="flex items-center space-x-1 bg-slate-900/60 md:bg-transparent px-2 py-1 md:p-0 rounded-md border border-slate-800/80 md:border-none">
-              <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+            <div className="flex items-center justify-center space-x-2 bg-slate-900 md:bg-transparent w-full sm:w-auto px-4 py-3 md:p-0 rounded-xl border border-slate-800 md:border-none">
+              <CheckCircle2 className="w-4 h-4 text-cyan-400 shrink-0" />
               <span>ETA Pass (PDF/QR)</span>
             </div>
           </div>
         </section>
 
-        {/* Error Alert */}
+        {/* Error Alert: Floats with proper margins on mobile */}
         {errorMessage && (
-          <div className="p-3.5 md:p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs max-w-2xl mx-auto flex items-center justify-between shadow-lg">
+          <div className="mx-4 md:mx-auto p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-sm max-w-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between shadow-lg gap-3">
             <span className="leading-relaxed">{errorMessage}</span>
-            <button onClick={() => setErrorMessage(null)} className="font-bold ml-3 p-1 text-red-400 hover:text-white">
-              ✕
+            <button 
+              onClick={() => setErrorMessage(null)} 
+              className="w-full sm:w-auto bg-red-500/20 hover:bg-red-500/30 text-red-200 py-2 px-4 rounded-lg font-bold transition-colors"
+            >
+              Dismiss
             </button>
           </div>
         )}
 
         {/* Assisted Agent Batch Panel when Agent Mode is Active */}
         {isAgentMode && stage === "upload" && (
-          <AgentBatchPanel
-            queueItems={queuedItems}
-            onSyncAll={handleSyncAll}
-            onClearQueue={handleClearQueue}
-            isSyncing={isSyncing}
-            isOnline={isOnline}
-            syncProgress={syncProgress}
-          />
+          <div className="px-4 md:px-0">
+            <AgentBatchPanel
+              queueItems={queuedItems}
+              onSyncAll={handleSyncAll}
+              onClearQueue={handleClearQueue}
+              isSyncing={isSyncing}
+              isOnline={isOnline}
+              syncProgress={syncProgress}
+            />
+          </div>
         )}
 
         {/* Dynamic Workflow Stages */}
@@ -273,15 +281,15 @@ export default function Home() {
         onClose={() => setIsArchModalOpen(false)}
       />
 
-      {/* Footer */}
-      <footer className="border-t border-slate-800/80 bg-slate-950/60 py-6 md:py-8 text-center text-xs text-slate-500 space-y-2 mt-auto">
-        <div className="flex items-center justify-center space-x-2">
-          <Shield className="w-3.5 h-3.5 text-emerald-400" />
-          <span>
+      {/* Footer: Extra bottom padding for mobile to account for native swipe bars */}
+      <footer className="border-t border-slate-800/80 bg-slate-950 py-8 md:py-10 text-center text-xs text-slate-500 mt-auto pb-safe">
+        <div className="flex flex-col items-center justify-center space-y-3 md:space-y-0 md:flex-row md:space-x-3 px-6">
+          <Shield className="w-5 h-5 text-emerald-400" />
+          <span className="text-[13px] md:text-sm">
             Project Atithi • Built for <em>Build What Moves India</em>
           </span>
         </div>
-        <p className="max-w-xl mx-auto text-[11px] text-slate-600 px-4">
+        <p className="max-w-xl mx-auto mt-4 leading-relaxed text-slate-600 px-6">
           Independent AI demonstration prototype. Compliant with Hackathon Zero-Interference Directives. All mock data &amp; identity cards are 100% synthetic specimens.
         </p>
       </footer>

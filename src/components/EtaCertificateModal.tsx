@@ -491,20 +491,20 @@ Hackathon Prototype • Build What Moves India`;
               <span>DPI delivery options: High-res PDF or low-data offline QR pass.</span>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center gap-2.5 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
               <button
                 onClick={handleGenerateQrPass}
-                className="w-full sm:w-auto flex items-center justify-center space-x-1.5 px-4 py-3 md:py-2.5 rounded-xl text-xs font-bold text-cyan-300 bg-cyan-950/60 border border-cyan-500/30 hover:bg-cyan-900/60 transition-colors min-h-[44px]"
+                className="w-full sm:w-auto flex items-center justify-center space-x-2 px-5 py-4 md:py-2.5 rounded-xl text-xs font-bold text-cyan-300 bg-cyan-950/70 border border-cyan-500/30 hover:bg-cyan-900/60 transition-colors min-h-[50px] md:min-h-[42px]"
               >
-                <QrCode className="w-4 h-4 text-cyan-400" />
-                <span>Get Offline QR / SMS</span>
+                <QrCode className="w-4 h-4 text-cyan-400 shrink-0" />
+                <span>Get Offline QR / SMS Pass</span>
               </button>
 
               <button
                 onClick={downloadPdf}
-                className="w-full sm:w-auto flex items-center justify-center space-x-2 px-5 py-3 md:py-2.5 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 hover:bg-amber-400 transition-all shadow-lg shadow-amber-500/20 min-h-[44px]"
+                className="w-full sm:w-auto flex items-center justify-center space-x-2 px-6 py-4 md:py-2.5 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 hover:bg-amber-400 transition-all shadow-lg shadow-amber-500/20 min-h-[50px] md:min-h-[42px]"
               >
-                <Download className="w-4 h-4" />
+                <Download className="w-4 h-4 text-slate-950 shrink-0" />
                 <span>Download Full PDF ETA</span>
               </button>
             </div>
@@ -514,8 +514,8 @@ Hackathon Prototype • Build What Moves India`;
 
       {/* Lightweight Offline QR & SMS Pass Modal */}
       {showQrModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-150">
-          <div className="relative w-full max-w-md bg-slate-900 border border-cyan-500/40 rounded-2xl p-6 shadow-2xl space-y-4 text-slate-100">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/90 backdrop-blur-md animate-in fade-in duration-150">
+          <div className="relative w-full max-w-md bg-slate-900 border border-cyan-500/40 rounded-2xl p-5 sm:p-6 shadow-2xl space-y-4 text-slate-100">
             <div className="flex items-center justify-between pb-3 border-b border-slate-800">
               <div className="flex items-center space-x-2">
                 <div className="p-2 rounded-lg bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
@@ -537,7 +537,7 @@ Hackathon Prototype • Build What Moves India`;
             {/* QR Code display */}
             {qrDataUrl && (
               <div className="bg-white p-4 rounded-xl text-center shadow-inner">
-                <img src={qrDataUrl} alt="Synthetic ETA QR Code" className="w-52 h-52 mx-auto" />
+                <img src={qrDataUrl} alt="Synthetic ETA QR Code" className="w-48 h-48 sm:w-52 sm:h-52 mx-auto" />
                 <p className="text-[10px] text-slate-700 font-mono mt-1 font-semibold">
                   SCAN AT IMMIGRATION • OFFLINE SIGNATURE
                 </p>
@@ -572,7 +572,7 @@ Hackathon Prototype • Build What Moves India`;
 
             <button
               onClick={() => setShowQrModal(false)}
-              className="w-full py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white transition-colors"
+              className="w-full py-3.5 md:py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-white transition-colors min-h-[46px]"
             >
               Close Pass
             </button>
