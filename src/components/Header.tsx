@@ -111,6 +111,15 @@ export const Header: React.FC<HeaderProps> = ({ onOpenArchitecture }) => {
                   Evaluators can test end-to-end with preloaded verified synthetic test fixtures without needing an OpenAI API key or registration.
                 </p>
               </div>
+
+              <div className="p-3 rounded-xl bg-slate-950/70 border border-slate-800/80">
+                <h4 className="font-semibold text-rose-400 mb-1 flex items-center">
+                  <ShieldCheck className="w-3.5 h-3.5 mr-1.5" /> 4. Strict Identity & Mismatch Rejection Guardrail
+                </h4>
+                <p className="text-slate-400 leading-relaxed">
+                  The AI Bouncer requires uploaded passport and travel itinerary files to belong to the exact same traveler. Mismatched or unverified random files are rejected with: <em>&ldquo;Details does not match you provided.&rdquo;</em>
+                </p>
+              </div>
             </div>
 
             <div className="pt-2 flex justify-end">

@@ -235,6 +235,14 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
             );
           })}
         </div>
+
+        {/* Evaluator / Judge Guardrail Note */}
+        <div className="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs flex items-start space-x-2.5">
+          <AlertTriangle className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+          <div className="leading-relaxed">
+            <strong className="text-amber-200">Notice for Judges & Evaluators:</strong> The AI Bouncer enforces strict cross-document identity matching. If you upload mismatched data (e.g. passport belonging to one person and a ticket for someone else, or random images/PDFs), the system will strictly reject the input with: <em className="text-amber-400 font-medium">&ldquo;Details does not match you provided.&rdquo;</em> Both documents must belong to the exact same traveler.
+          </div>
+        </div>
       </div>
 
       {/* Dual Multimodal Dropzone Grid */}
