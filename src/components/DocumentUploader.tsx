@@ -97,6 +97,9 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
     if (e.target.files && e.target.files[0]) {
       const doc = await processImageFile(e.target.files[0], "passport");
       setPassportDoc(doc);
+      if (selectedFixture) {
+        setItineraryText("");
+      }
       setSelectedFixture(null); // custom mode
     }
   };
@@ -170,6 +173,7 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
   const clearItineraryAttachment = () => {
     setPdfFileName(null);
     setItineraryDoc(null);
+    setItineraryText("");
     if (itineraryInputRef.current) {
       itineraryInputRef.current.value = "";
     }
@@ -361,7 +365,7 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
               </span>
             </div>
             <p className="text-xs text-slate-400 mb-4">
-              Paste flight ticket, hotel reservation, or conference invite. AI automatically extracts the required hotel/host address, state, district & phone.
+              Attach flight ticket / hotel PDF or paste details. AI automatically cross-references identity with passport photo.
             </p>
 
             <div className="space-y-3">
@@ -373,36 +377,43 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
                 </div>
               )}
 
-              {/* PDF/Attachment Badge */}
-              {pdfFileName && (
-                <div className="flex items-center justify-between p-2.5 rounded-xl bg-slate-900 border border-emerald-500/30 text-xs">
-                  <div className="flex items-center space-x-2">
-                    <FileCheck className="w-4 h-4 text-emerald-400" />
-                    <span className="text-white font-medium">{pdfFileName}</span>
-                    <span className="text-[10px] text-emerald-400 bg-emerald-500/10 px-1.5 py-0.5 rounded font-mono">
-                      PDF Text Cleaned
-                    </span>
+              {/* PDF/Attachment Badge - Removes raw text segment when PDF is attached */}
+              {pdfFileName ? (
+                <div className="p-4 rounded-xl bg-slate-900/90 border border-emerald-500/40 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-2.5">
+                      <FileCheck className="w-5 h-5 text-emerald-400" />
+                      <div>
+                        <span className="text-white font-semibold text-xs block">{pdfFileName}</span>
+                        <span className="text-[10px] text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded font-mono inline-block mt-0.5">
+                          PDF Document Attached (Text segment hidden)
+                        </span>
+                      </div>
+                    </div>
+                    <button
+                      onClick={clearItineraryAttachment}
+                      className="text-slate-400 hover:text-white p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 transition-colors"
+                      title="Remove attached PDF"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
                   </div>
-                  <button
-                    onClick={clearItineraryAttachment}
-                    className="text-slate-400 hover:text-white p-1 rounded"
-                    title="Remove attached file"
-                  >
-                    <X className="w-3.5 h-3.5" />
-                  </button>
+                  <p className="text-[11px] text-slate-400 leading-relaxed">
+                    PDF loaded directly into AI bouncer pipeline. Manual text field hidden for strict document fidelity.
+                  </p>
                 </div>
+              ) : (
+                <textarea
+                  value={itineraryText}
+                  onChange={(e) => {
+                    setItineraryText(e.target.value);
+                    setSelectedFixture(null);
+                  }}
+                  rows={6}
+                  placeholder="Paste flight ticket details, hotel reservation (Taj, Oberoi, Leela), conference invitation, or hospital letter with address and phone..."
+                  className="w-full glass-input rounded-xl p-3.5 text-xs font-mono text-slate-200 placeholder-slate-600 resize-none leading-relaxed"
+                />
               )}
-
-              <textarea
-                value={itineraryText}
-                onChange={(e) => {
-                  setItineraryText(e.target.value);
-                  setSelectedFixture(null);
-                }}
-                rows={6}
-                placeholder="Paste flight ticket details, hotel reservation (Taj, Oberoi, Leela), conference invitation, or hospital letter with address and phone..."
-                className="w-full glass-input rounded-xl p-3.5 text-xs font-mono text-slate-200 placeholder-slate-600 resize-none leading-relaxed"
-              />
 
               <div className="flex items-center justify-between">
                 <button

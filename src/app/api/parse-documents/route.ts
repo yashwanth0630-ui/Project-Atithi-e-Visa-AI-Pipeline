@@ -134,7 +134,7 @@ export async function POST(request: Request) {
       if (parsedData.is_valid_document === false || parsedData.names_match === false) {
         return NextResponse.json({ 
           success: false, 
-          error: "Validation Failed: Documents must be a valid passport and itinerary belonging to the EXACT SAME traveler." 
+          error: "Details does not match you provided. The uploaded passport photo and ticket PDF must contain the exact same matching details." 
         }, { status: 400 });
       }
 
