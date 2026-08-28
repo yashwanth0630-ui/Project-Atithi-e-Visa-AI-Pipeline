@@ -7,8 +7,8 @@ export function compressImageToBase64(file: File, isExtreme2GMode: boolean): Pro
       img.src = event.target?.result as string;
       img.onload = () => {
         const canvas = document.createElement('canvas');
-        // Extreme mode shrinks to 600px, standard to 1200px
-        const MAX_WIDTH = isExtreme2GMode ? 600 : 1200;
+        // Extreme mode shrinks to 600px, standard to 900px for high-throughput speed
+        const MAX_WIDTH = isExtreme2GMode ? 600 : 900;
         const scaleSize = Math.min(1, MAX_WIDTH / img.width);
         canvas.width = Math.round(img.width * scaleSize);
         canvas.height = Math.round(img.height * scaleSize);

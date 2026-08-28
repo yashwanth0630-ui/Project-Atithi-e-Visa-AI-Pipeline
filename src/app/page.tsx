@@ -89,15 +89,11 @@ export default function Home() {
     setErrorMessage(null);
 
     try {
-      const minDelay = new Promise((resolve) => setTimeout(resolve, 1400));
-
-      const requestPromise = fetch("/api/parse-documents", {
+      const res = await fetch("/api/parse-documents", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-
-      const [res] = await Promise.all([requestPromise, minDelay]);
       const json = await res.json();
 
       if (json.success && json.data) {

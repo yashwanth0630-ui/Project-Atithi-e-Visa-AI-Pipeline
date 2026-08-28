@@ -105,7 +105,7 @@ export async function POST(request: Request) {
         
         userContent.push({
           type: "image_url",
-          image_url: { url: formattedUrl, detail: "high" },
+          image_url: { url: formattedUrl, detail: "auto" },
         });
       }
 
@@ -117,7 +117,7 @@ export async function POST(request: Request) {
       }
 
       const response = await openai.beta.chat.completions.parse({
-        model: "gpt-4o-2024-08-06",
+        model: "gpt-4o-mini",
         messages: [
           {
             role: "system",
