@@ -151,6 +151,15 @@ function getAvatarSvg(fixtureId: string): string {
   }
 }
 
+function escapeXml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
+}
+
 // Generate base64 SVG synthetic passport preview
 function generateSyntheticPassportSvg(
   fixtureId: string,
@@ -166,6 +175,17 @@ function generateSyntheticPassportSvg(
   const mrz1 = `P<${countryCode.slice(0, 3).toUpperCase()}${surname.toUpperCase()}<<${givenName.toUpperCase()}<<<<<<<<<<<<<<<<<<<`.padEnd(44, '<').slice(0, 44);
   const mrz2 = `${passportNo.toUpperCase()}<${countryCode.slice(0, 3).toUpperCase()}9001018${gender[0]}3001014<<<<<<<<<<<<<<02`.padEnd(44, '<').slice(0, 44);
   const rawMrz = `${mrz1}\n${mrz2}`;
+
+  const safeMrz1 = escapeXml(mrz1);
+  const safeMrz2 = escapeXml(mrz2);
+  const safeGivenName = escapeXml(givenName);
+  const safeSurname = escapeXml(surname);
+  const safeNationality = escapeXml(nationality);
+  const safePassportNo = escapeXml(passportNo);
+  const safeDob = escapeXml(dob);
+  const safeGender = escapeXml(gender);
+  const safeCountryCode = escapeXml(countryCode);
+  const safeCountryTitle = escapeXml(countryTitle);
 
   const avatarSvg = getAvatarSvg(fixtureId);
 
@@ -211,10 +231,10 @@ function generateSyntheticPassportSvg(
     <!-- Header / Issuing State Bar -->
     <g transform="translate(40, 62)">
       <text x="0" y="20" fill="#f8fafc" font-size="18" font-weight="900" letter-spacing="2">
-        ${countryTitle.toUpperCase()}
+        ${safeCountryTitle.toUpperCase()}
       </text>
       <text x="0" y="38" fill="#94a3b8" font-size="11" font-weight="700" letter-spacing="1.5">
-        PASSPORT / PASSEPORT • TYPE P • CODE: ${countryCode.toUpperCase()}
+        PASSPORT / PASSEPORT • TYPE P • CODE: ${safeCountryCode.toUpperCase()}
       </text>
 
       <!-- Biometric e-Passport Chip Emblem -->
@@ -238,34 +258,34 @@ function generateSyntheticPassportSvg(
     <!-- Row 1: Names -->
     <g transform="translate(230, 125)">
       <text x="0" y="10" fill="#94a3b8" font-size="11" font-weight="700">Surname / Nom</text>
-      <text x="0" y="30" fill="#ffffff" font-size="17" font-weight="900" letter-spacing="0.5">${surname.toUpperCase()}</text>
+      <text x="0" y="30" fill="#ffffff" font-size="17" font-weight="900" letter-spacing="0.5">${safeSurname.toUpperCase()}</text>
     </g>
 
     <g transform="translate(510, 125)">
       <text x="0" y="10" fill="#94a3b8" font-size="11" font-weight="700">Passport No. / No du passeport</text>
-      <text x="0" y="30" fill="#38bdf8" font-size="18" font-weight="900" font-family="monospace">${passportNo.toUpperCase()}</text>
+      <text x="0" y="30" fill="#38bdf8" font-size="18" font-weight="900" font-family="monospace">${safePassportNo.toUpperCase()}</text>
     </g>
 
     <!-- Row 2: Given Names & Nationality -->
     <g transform="translate(230, 178)">
       <text x="0" y="10" fill="#94a3b8" font-size="11" font-weight="700">Given Names / Prénoms</text>
-      <text x="0" y="30" fill="#ffffff" font-size="17" font-weight="900" letter-spacing="0.5">${givenName.toUpperCase()}</text>
+      <text x="0" y="30" fill="#ffffff" font-size="17" font-weight="900" letter-spacing="0.5">${safeGivenName.toUpperCase()}</text>
     </g>
 
     <g transform="translate(510, 178)">
       <text x="0" y="10" fill="#94a3b8" font-size="11" font-weight="700">Nationality / Nationalité</text>
-      <text x="0" y="30" fill="#ffffff" font-size="15" font-weight="800">${nationality}</text>
+      <text x="0" y="30" fill="#ffffff" font-size="15" font-weight="800">${safeNationality}</text>
     </g>
 
     <!-- Row 3: DOB & Sex -->
     <g transform="translate(230, 232)">
       <text x="0" y="10" fill="#94a3b8" font-size="11" font-weight="700">Date of Birth / Date de naissance</text>
-      <text x="0" y="30" fill="#ffffff" font-size="15" font-weight="800" font-family="monospace">${dob}</text>
+      <text x="0" y="30" fill="#ffffff" font-size="15" font-weight="800" font-family="monospace">${safeDob}</text>
     </g>
 
     <g transform="translate(510, 232)">
       <text x="0" y="10" fill="#94a3b8" font-size="11" font-weight="700">Sex / Sexe</text>
-      <text x="0" y="30" fill="#ffffff" font-size="15" font-weight="800">${gender}</text>
+      <text x="0" y="30" fill="#ffffff" font-size="15" font-weight="800">${safeGender}</text>
     </g>
 
     <!-- Row 4: Place of Issue & Expiry -->
@@ -288,12 +308,12 @@ function generateSyntheticPassportSvg(
       <rect x="0" y="0" width="760" height="110" rx="12" fill="url(#mrzGrad)" stroke="#334155" stroke-width="2"/>
       <line x1="0" y1="2" x2="760" y2="2" stroke="#475569" stroke-width="1"/>
       <!-- MRZ Line 1 -->
-      <text x="24" y="44" fill="#38bdf8" font-size="17" font-family="'Courier New', Courier, monospace" font-weight="bold" letter-spacing="4">
-        ${mrz1}
+      <text x="24" y="44" fill="#38bdf8" font-size="17" font-family="monospace, Courier, Courier New" font-weight="bold" letter-spacing="4">
+        ${safeMrz1}
       </text>
       <!-- MRZ Line 2 -->
-      <text x="24" y="82" fill="#38bdf8" font-size="17" font-family="'Courier New', Courier, monospace" font-weight="bold" letter-spacing="4">
-        ${mrz2}
+      <text x="24" y="82" fill="#38bdf8" font-size="17" font-family="monospace, Courier, Courier New" font-weight="bold" letter-spacing="4">
+        ${safeMrz2}
       </text>
     </g>
   </svg>
