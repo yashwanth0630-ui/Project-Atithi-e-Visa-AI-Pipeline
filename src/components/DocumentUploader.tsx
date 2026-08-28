@@ -18,7 +18,10 @@ import {
   Building,
   ScanLine,
   Loader2,
-  X
+  X,
+  ZoomIn,
+  Maximize2,
+  Download
 } from "lucide-react";
 import { UploadedDocument } from "@/lib/schema";
 import { SYNTHETIC_FIXTURES, SyntheticFixture } from "@/lib/fixtures";
@@ -42,6 +45,7 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
   is2GMode = false,
 }) => {
   const [selectedFixture, setSelectedFixture] = useState<SyntheticFixture | null>(SYNTHETIC_FIXTURES[0]);
+  const [isPassportModalOpen, setIsPassportModalOpen] = useState<boolean>(false);
   const [passportDoc, setPassportDoc] = useState<UploadedDocument | null>({
     id: "preset-passport",
     name: "specimen_passport_sarah_jenkins.svg",
@@ -49,7 +53,7 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
     dataUrl: SYNTHETIC_FIXTURES[0].passportDataUrl,
     size: 24500,
     status: "ready",
-    dimensions: { width: 600, height: 380 },
+    dimensions: { width: 800, height: 520 },
     qualityChecks: {
       resolutionAdequate: true,
       aspectRatioStandard: true,
@@ -152,7 +156,7 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
       dataUrl: fixture.passportDataUrl,
       size: 24000,
       status: "ready",
-      dimensions: { width: 600, height: 380 },
+      dimensions: { width: 800, height: 520 },
       qualityChecks: {
         resolutionAdequate: true,
         aspectRatioStandard: true,
@@ -252,45 +256,68 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
 
             {/* Passport Preview or Drop target */}
             {passportDoc ? (
-              <div className="relative rounded-xl border border-slate-700/80 bg-slate-950/80 p-3 space-y-3">
-                <div className="relative aspect-[16/10] w-full rounded-lg overflow-hidden border border-slate-800 bg-slate-900 flex items-center justify-center">
+              <div className="relative rounded-xl border border-slate-700/80 bg-slate-950/90 p-3 space-y-3 shadow-2xl">
+                <div 
+                  onClick={() => setIsPassportModalOpen(true)}
+                  className="group relative aspect-[8/5.2] w-full rounded-xl overflow-hidden border border-slate-700/80 bg-[#070d18] flex items-center justify-center cursor-zoom-in hover:border-amber-500/50 transition-all"
+                >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={passportDoc.dataUrl}
-                    alt="Passport Preview"
-                    className="w-full h-full object-contain"
+                    alt="Passport Specimen Preview"
+                    className="w-full h-full object-contain filter drop-shadow-md select-none transition-transform duration-200 group-hover:scale-[1.01]"
                   />
-                  <div className="absolute top-2 right-2 px-2 py-1 rounded bg-slate-950/80 border border-emerald-500/40 text-emerald-400 text-[10px] font-mono flex items-center space-x-1">
+                  
+                  {/* Floating Action Overlay on Hover */}
+                  <div className="absolute inset-0 bg-slate-950/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <div className="px-3 py-1.5 rounded-full bg-slate-900/90 border border-amber-500/50 text-amber-300 text-xs font-semibold flex items-center space-x-1.5 shadow-xl backdrop-blur-sm">
+                      <ZoomIn className="w-3.5 h-3.5 text-amber-400" />
+                      <span>Click to Inspect Full Resolution</span>
+                    </div>
+                  </div>
+
+                  <div className="absolute top-2 right-2 px-2 py-1 rounded-md bg-slate-950/90 border border-emerald-500/40 text-emerald-400 text-[10px] font-mono flex items-center space-x-1 backdrop-blur-sm">
                     <CheckCircle2 className="w-3 h-3" />
-                    <span>{is2GMode ? "2G Grayscale (<40KB)" : "Canvas Compressed (1200px)"}</span>
+                    <span>{is2GMode ? "2G Grayscale (<40KB)" : "ICAO High-Contrast Bio-Page"}</span>
                   </div>
                 </div>
 
                 {/* Quality Metrics */}
                 <div className="grid grid-cols-3 gap-2 text-[10px] font-mono">
-                  <div className="p-2 rounded bg-slate-900 border border-slate-800 text-slate-300">
+                  <div className="p-2 rounded bg-slate-900/90 border border-slate-800 text-slate-300">
                     <span className="text-slate-500 block">Resolution</span>
                     {is2GMode ? "600x400 (2G)" : `${passportDoc.dimensions?.width}x${passportDoc.dimensions?.height}px`}
                   </div>
-                  <div className="p-2 rounded bg-slate-900 border border-slate-800 text-slate-300">
+                  <div className="p-2 rounded bg-slate-900/90 border border-slate-800 text-slate-300">
                     <span className="text-slate-500 block">MRZ Checksum</span>
-                    <span className="text-emerald-400 font-semibold">2-Line Parity</span>
+                    <span className="text-emerald-400 font-semibold">2-Line ICAO Parity</span>
                   </div>
-                  <div className="p-2 rounded bg-slate-900 border border-slate-800 text-slate-300">
+                  <div className="p-2 rounded bg-slate-900/90 border border-slate-800 text-slate-300">
                     <span className="text-slate-500 block">Payload Guard</span>
                     <span className="text-cyan-400 font-semibold">{is2GMode ? "~35 KB" : "< 4.5MB Safe"}</span>
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between pt-1">
-                  <button
-                    onClick={() => passportInputRef.current?.click()}
-                    className="text-xs text-amber-400 hover:text-amber-300 flex items-center space-x-1"
-                  >
-                    <RefreshCw className="w-3 h-3" />
-                    <span>Upload Different Image</span>
-                  </button>
-                  <span className="text-[10px] text-slate-500">{passportDoc.name}</span>
+                  <div className="flex items-center space-x-3">
+                    <button
+                      onClick={() => passportInputRef.current?.click()}
+                      className="text-xs text-amber-400 hover:text-amber-300 flex items-center space-x-1 font-medium"
+                    >
+                      <RefreshCw className="w-3 h-3" />
+                      <span>Upload Custom Passport</span>
+                    </button>
+                    <button
+                      onClick={() => setIsPassportModalOpen(true)}
+                      className="text-xs text-cyan-400 hover:text-cyan-300 flex items-center space-x-1 font-medium"
+                    >
+                      <Maximize2 className="w-3 h-3" />
+                      <span>Zoom View</span>
+                    </button>
+                  </div>
+                  <span className="text-[10px] text-slate-500 font-mono truncate max-w-[140px]">
+                    {passportDoc.name}
+                  </span>
                 </div>
               </div>
             ) : (
@@ -442,6 +469,64 @@ export const DocumentUploader: React.FC<DocumentUploaderProps> = ({
           )}
         </button>
       </div>
+
+      {/* Full Resolution Passport Specimen Inspection Modal */}
+      {isPassportModalOpen && passportDoc && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
+          <div className="relative max-w-4xl w-full bg-slate-900 border border-slate-700 rounded-2xl p-6 shadow-2xl space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div className="flex items-center space-x-2.5">
+                <div className="p-2 rounded-lg bg-blue-500/10 text-blue-400 border border-blue-500/20">
+                  <ScanLine className="w-5 h-5" />
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-white">Full-Resolution Passport Bio-Page Inspection</h3>
+                  <p className="text-xs text-slate-400">ICAO Doc 9303 Type-3 Specimen Bio-Data & Checksum MRZ</p>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <a
+                  href={passportDoc.dataUrl}
+                  download={passportDoc.name || "specimen_passport.svg"}
+                  className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs text-slate-300 flex items-center space-x-1.5 border border-slate-700 transition-colors"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>Download SVG</span>
+                </a>
+                <button
+                  onClick={() => setIsPassportModalOpen(false)}
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            <div className="relative w-full rounded-xl overflow-hidden border border-slate-800 bg-[#070d18] p-2 flex items-center justify-center">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={passportDoc.dataUrl}
+                alt="Full Passport Specimen"
+                className="w-full max-h-[70vh] object-contain filter drop-shadow-2xl"
+              />
+            </div>
+
+            <div className="flex items-center justify-between text-xs text-slate-400 pt-1">
+              <div className="flex items-center space-x-2">
+                <Shield className="w-4 h-4 text-emerald-400" />
+                <span>Synthetic Specimen Safeguard: 100% Mock Data with valid ICAO parity calculation</span>
+              </div>
+              <button
+                onClick={() => setIsPassportModalOpen(false)}
+                className="px-4 py-1.5 rounded-lg bg-amber-500 text-slate-950 font-bold text-xs hover:bg-amber-400 transition-colors"
+              >
+                Close Inspection
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
