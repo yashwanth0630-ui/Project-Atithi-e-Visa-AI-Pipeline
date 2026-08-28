@@ -10,6 +10,7 @@ export const maxDuration = 60;
 
 const EVisaExtractionSchema = z.object({
   is_valid_document: z.boolean().describe("CRITICAL: Set to true ONLY if a real passport and itinerary are detected. Set to false for random images, menus, or unrelated PDFs."),
+  names_match: z.boolean().describe("CRITICAL: Set to true ONLY if the traveler name on the passport matches the passenger name on the itinerary. Set to false if they are different people or if the name is missing on either document."),
   traveler: z.object({
     given_name: z.string(),
     surname: z.string().describe("Extract ONLY the legal family name. Exclude headers, file names, or travel phrases like FLIGHT ROUTE."),
@@ -120,7 +121,7 @@ export async function POST(request: Request) {
         messages: [
           {
             role: "system",
-            content: "You are a strict Indian Immigration AI Bouncer. FIRST, check if the files are a legitimate passport and travel itinerary. If they are random junk, set is_valid_document to false. If valid, extract the bio-data and cross-reference the itinerary.",
+            content: "You are a strict Indian Immigration AI Bouncer. FIRST, verify the files are a legitimate passport and itinerary (is_valid_document). SECOND, verify the exact same traveler is named on BOTH documents (names_match). If it is random junk OR the names do not match, set the flags to false and do not extract data. If valid and matching, extract the schema.",
           },
           { role: "user", content: userContent },
         ],
@@ -130,10 +131,10 @@ export async function POST(request: Request) {
       const parsedData = response.choices[0]?.message?.parsed;
       if (!parsedData) throw new Error("Model failed to parse into e-Visa schema.");
 
-      if (parsedData.is_valid_document === false) {
+      if (parsedData.is_valid_document === false || parsedData.names_match === false) {
         return NextResponse.json({ 
           success: false, 
-          error: "Documents did not meet required metrics. Please upload a valid passport bio-page and travel itinerary." 
+          error: "Validation Failed: Documents must be a valid passport and itinerary belonging to the EXACT SAME traveler." 
         }, { status: 400 });
       }
 
@@ -186,8 +187,8 @@ function generateDynamicFallback(rawText: string) {
   const raw = rawText || "";
   const lower = raw.toLowerCase();
 
-  let givenName = "Yashwanth";
-  let surname = "Telukuntla";
+  let givenName = "Alexander";
+  let surname = "Mueller";
   let gender: "Male" | "Female" | "Other" = "Male";
 
   const NAME_NOISE = /\b(FLIGHT|ROUTE|TICKET|ITINERARY|RECEIPT|BOARDING|PASS|CONFIRMATION|ETICKET|E-TICKET|BOOKING|REFERENCE|PNR|DEPARTURE|ARRIVAL|AIRLINE|DOCUMENT|PASSENGER|SCHEDULED)\b/gi;
@@ -258,12 +259,14 @@ function generateDynamicFallback(rawText: string) {
     .slice(0, 44);
 
   return {
+    is_valid_document: true,
+    names_match: true,
     traveler: {
       given_name: givenName.toUpperCase(),
       surname: surname.toUpperCase(),
       passport_number: passportNo,
-      date_of_birth: "2008-06-30",
-      nationality: "India / Specimen",
+      date_of_birth: "1988-06-30",
+      nationality: "Germany / Specimen",
       gender: gender,
     },
     mrz_data: {
