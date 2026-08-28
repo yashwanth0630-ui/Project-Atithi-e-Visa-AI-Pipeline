@@ -166,7 +166,7 @@ export default function Home() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#090d16] text-slate-100">
+    <div className="min-h-screen flex flex-col bg-[#090d16] text-slate-100 antialiased">
       <Header onOpenArchitecture={() => setIsArchModalOpen(true)} />
 
       {/* Network & DPI Status Bar */}
@@ -181,46 +181,46 @@ export default function Home() {
         isSyncing={isSyncing}
       />
 
-      {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 space-y-8">
-        {/* Hero Banner */}
-        <section className="text-center space-y-4 max-w-3xl mx-auto pt-2">
-          <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-emerald-500/10 border border-amber-500/30 text-amber-300 text-xs font-semibold shadow-inner">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span>Intent-to-Action Multimodal Pipeline • India DPI & Offline PWA Ready</span>
+      {/* Main Container: Edge-to-Edge on mobile, constrained on desktop */}
+      <main className="flex-1 w-full px-3 py-4 md:max-w-7xl md:mx-auto md:px-6 lg:px-8 md:py-10 space-y-6 md:space-y-8">
+        {/* Hero Banner: Compact on Mobile */}
+        <section className="text-center space-y-3 md:space-y-4 max-w-3xl mx-auto pt-1 md:pt-2 px-2 md:px-0">
+          <div className="inline-flex items-center space-x-1.5 md:space-x-2 px-2.5 py-1 md:px-3 md:py-1.5 rounded-full bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-emerald-500/10 border border-amber-500/30 text-amber-300 text-[11px] md:text-xs font-semibold shadow-inner">
+            <Sparkles className="w-3 h-3 md:w-3.5 md:h-3.5 text-amber-400 shrink-0" />
+            <span className="truncate">Intent-to-Action Multimodal Pipeline • DPI Ready</span>
           </div>
 
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tight text-white leading-tight">
-            Indian e-Visa Application, <br />
-            <span className="gradient-text-saffron">Automated & Frictionless.</span>
+          <h1 className="text-2xl sm:text-4xl md:text-5xl font-black tracking-tight text-white leading-tight">
+            Indian e-Visa Application, <br className="hidden sm:inline" />
+            <span className="gradient-text-saffron">Automated &amp; Frictionless.</span>
           </h1>
 
-          <p className="text-sm sm:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-xs sm:text-sm md:text-base text-slate-400 max-w-2xl mx-auto leading-relaxed">
             Drop raw traveler documents. Our multimodal pipeline parses identity bio-pages, semantically classifies the right visa sub-category, and validates against Indian immigration schemas.
           </p>
 
-          {/* Quick Metrics */}
-          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-8 pt-1 text-xs font-medium text-slate-400">
-            <div className="flex items-center space-x-1.5">
-              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-              <span>Zero Manual Multi-page Forms</span>
+          {/* Quick Metrics: Compact wrap */}
+          <div className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-6 md:gap-8 pt-1 text-[11px] md:text-xs font-medium text-slate-400">
+            <div className="flex items-center space-x-1 bg-slate-900/60 md:bg-transparent px-2 py-1 md:p-0 rounded-md border border-slate-800/80 md:border-none">
+              <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              <span>Zero Manual Forms</span>
             </div>
-            <div className="flex items-center space-x-1.5">
-              <CheckCircle2 className="w-4 h-4 text-amber-400" />
-              <span>Offline PWA & 2G Resilient</span>
+            <div className="flex items-center space-x-1 bg-slate-900/60 md:bg-transparent px-2 py-1 md:p-0 rounded-md border border-slate-800/80 md:border-none">
+              <CheckCircle2 className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+              <span>Offline PWA / 2G</span>
             </div>
-            <div className="flex items-center space-x-1.5">
-              <CheckCircle2 className="w-4 h-4 text-cyan-400" />
-              <span>Multi-Format ETA Pass (PDF / QR)</span>
+            <div className="flex items-center space-x-1 bg-slate-900/60 md:bg-transparent px-2 py-1 md:p-0 rounded-md border border-slate-800/80 md:border-none">
+              <CheckCircle2 className="w-3.5 h-3.5 text-cyan-400 shrink-0" />
+              <span>ETA Pass (PDF/QR)</span>
             </div>
           </div>
         </section>
 
         {/* Error Alert */}
         {errorMessage && (
-          <div className="p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs max-w-2xl mx-auto flex items-center justify-between">
-            <span>{errorMessage}</span>
-            <button onClick={() => setErrorMessage(null)} className="font-bold ml-2">
+          <div className="p-3.5 md:p-4 rounded-xl bg-red-500/10 border border-red-500/30 text-red-300 text-xs max-w-2xl mx-auto flex items-center justify-between shadow-lg">
+            <span className="leading-relaxed">{errorMessage}</span>
+            <button onClick={() => setErrorMessage(null)} className="font-bold ml-3 p-1 text-red-400 hover:text-white">
               ✕
             </button>
           </div>
@@ -239,7 +239,7 @@ export default function Home() {
         )}
 
         {/* Dynamic Workflow Stages */}
-        <section className="relative">
+        <section className="relative w-full">
           {stage === "upload" && (
             <DocumentUploader
               onProcess={handleProcessDocuments}
@@ -274,7 +274,7 @@ export default function Home() {
       />
 
       {/* Footer */}
-      <footer className="border-t border-slate-800/80 bg-slate-950/60 py-8 text-center text-xs text-slate-500 space-y-2">
+      <footer className="border-t border-slate-800/80 bg-slate-950/60 py-6 md:py-8 text-center text-xs text-slate-500 space-y-2 mt-auto">
         <div className="flex items-center justify-center space-x-2">
           <Shield className="w-3.5 h-3.5 text-emerald-400" />
           <span>
@@ -282,7 +282,7 @@ export default function Home() {
           </span>
         </div>
         <p className="max-w-xl mx-auto text-[11px] text-slate-600 px-4">
-          Independent AI demonstration prototype. Compliant with Hackathon Zero-Interference Directives. All mock data & identity cards are 100% synthetic specimens.
+          Independent AI demonstration prototype. Compliant with Hackathon Zero-Interference Directives. All mock data &amp; identity cards are 100% synthetic specimens.
         </p>
       </footer>
     </div>

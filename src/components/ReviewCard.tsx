@@ -385,19 +385,19 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
       </div>
 
       {/* Action Bar */}
-      <div className="glass-panel rounded-2xl p-5 border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center space-x-3 w-full sm:w-auto">
+      <div className="glass-panel rounded-2xl p-3.5 md:p-5 border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 md:gap-4 sticky bottom-2 z-30 bg-slate-950/95 backdrop-blur-lg md:static md:bg-transparent shadow-2xl">
+        <div className="flex items-center space-x-2.5 w-full sm:w-auto">
           <button
             onClick={onReset}
-            className="flex items-center justify-center space-x-1.5 px-4 py-2.5 rounded-xl text-xs font-medium text-slate-400 bg-slate-900 hover:text-white border border-slate-800 transition-colors w-full sm:w-auto"
+            className="flex-1 sm:flex-initial flex items-center justify-center space-x-1.5 px-3.5 py-3 md:py-2.5 rounded-xl text-xs font-medium text-slate-400 bg-slate-900 hover:text-white border border-slate-800 transition-colors min-h-[44px]"
           >
             <RotateCcw className="w-3.5 h-3.5" />
-            <span>Upload New Documents</span>
+            <span>Upload New</span>
           </button>
 
           <button
             onClick={copyJsonPayload}
-            className="flex items-center justify-center space-x-1.5 px-4 py-2.5 rounded-xl text-xs font-medium text-slate-300 bg-slate-900 hover:text-white border border-slate-800 transition-colors w-full sm:w-auto"
+            className="flex-1 sm:flex-initial flex items-center justify-center space-x-1.5 px-3.5 py-3 md:py-2.5 rounded-xl text-xs font-medium text-slate-300 bg-slate-900 hover:text-white border border-slate-800 transition-colors min-h-[44px]"
           >
             {copied ? (
               <>
@@ -407,7 +407,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
             ) : (
               <>
                 <Copy className="w-3.5 h-3.5 text-slate-400" />
-                <span>Export Deep Zod JSON</span>
+                <span>Export JSON</span>
               </>
             )}
           </button>
@@ -415,7 +415,7 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
 
         <button
           onClick={() => onGenerateEta(formData)}
-          className="w-full sm:w-auto px-8 py-3.5 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center space-x-2.5 bg-gradient-to-r from-amber-500 via-orange-500 to-emerald-600 text-slate-950 hover:brightness-110 shadow-lg shadow-orange-500/20 active:scale-[0.98] transition-all"
+          className="w-full sm:w-auto px-6 md:px-8 py-3.5 rounded-xl font-bold text-xs sm:text-sm flex items-center justify-center space-x-2 bg-gradient-to-r from-amber-500 via-orange-500 to-emerald-600 text-slate-950 hover:brightness-110 shadow-lg shadow-orange-500/20 active:scale-[0.98] transition-all min-h-[48px]"
         >
           <Sparkles className="w-4 h-4 text-slate-950" />
           <span>Approve & Issue Synthetic ETA Pass</span>

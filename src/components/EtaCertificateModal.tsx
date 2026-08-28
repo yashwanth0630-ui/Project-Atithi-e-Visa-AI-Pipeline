@@ -320,7 +320,6 @@ Hackathon Prototype • Build What Moves India`;
       166
     );
     doc.text(splitNotice, 22, 258);
-
     doc.save(`Synthetic_Indian_ETA_${safeSurname}_${etaNumber}.pdf`);
   };
 
@@ -333,20 +332,20 @@ Hackathon Prototype • Build What Moves India`;
 
   return (
     <>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
-        <div className="relative w-full max-w-3xl bg-slate-900 border border-slate-700/80 rounded-2xl p-6 sm:p-8 shadow-2xl space-y-6 max-h-[95vh] overflow-y-auto">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
+        <div className="relative w-full max-w-3xl bg-slate-900 border border-slate-700/80 rounded-xl md:rounded-2xl p-4 sm:p-6 md:p-8 shadow-2xl space-y-4 md:space-y-6 max-h-[96vh] overflow-y-auto">
           {/* Header */}
-          <div className="flex items-center justify-between pb-4 border-b border-slate-800">
-            <div className="flex items-center space-x-3">
-              <div className="p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                <CheckCircle2 className="w-6 h-6" />
+          <div className="flex items-center justify-between pb-3 md:pb-4 border-b border-slate-800">
+            <div className="flex items-center space-x-2.5 md:space-x-3">
+              <div className="p-2 md:p-2.5 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 shrink-0">
+                <CheckCircle2 className="w-5 h-5 md:w-6 md:h-6" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-white tracking-tight">
-                  Synthetic Electronic Travel Authorization (ETA)
+                <h2 className="text-base sm:text-xl font-bold text-white tracking-tight">
+                  Synthetic ETA Pass
                 </h2>
-                <p className="text-xs text-slate-400">
-                  Application Successfully Formatted & Ready for Issuance
+                <p className="text-[11px] md:text-xs text-slate-400">
+                  Formatted & Ready for Issuance
                 </p>
               </div>
             </div>
@@ -361,30 +360,30 @@ Hackathon Prototype • Build What Moves India`;
           {/* Certificate Printable Area */}
           <div
             ref={certRef}
-            className="relative bg-slate-950 border-2 border-slate-700 rounded-xl p-6 sm:p-8 space-y-5 overflow-hidden shadow-2xl text-slate-100"
+            className="relative bg-slate-950 border-2 border-slate-700 rounded-xl p-3.5 sm:p-6 md:p-8 space-y-4 md:space-y-5 overflow-hidden shadow-2xl text-slate-100"
           >
             <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-orange-500 via-white to-emerald-600" />
 
             <div className="p-2 rounded-lg bg-red-500/10 border border-red-500/30 text-center">
-              <p className="text-[11px] font-mono font-bold text-red-400">
+              <p className="text-[10px] md:text-[11px] font-mono font-bold text-red-400">
                 ⚠️ 100% SYNTHETIC SPECIMEN • FOR HACKATHON EVALUATION ONLY • NOT AN OFFICIAL VISA
               </p>
             </div>
 
             <div className="text-center space-y-1 pb-3 border-b border-slate-800">
-              <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 font-bold mb-1">
+              <div className="inline-flex items-center justify-center w-8 h-8 md:w-10 md:h-10 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 font-bold text-sm md:text-base mb-1">
                 अ
               </div>
-              <h3 className="text-base sm:text-lg font-black tracking-wider uppercase text-white">
+              <h3 className="text-sm sm:text-base md:text-lg font-black tracking-wider uppercase text-white">
                 Government of India (Prototype Specimen)
               </h3>
-              <p className="text-xs font-bold text-amber-400 tracking-widest uppercase">
+              <p className="text-[11px] md:text-xs font-bold text-amber-400 tracking-widest uppercase">
                 Electronic Travel Authorization (ETA)
               </p>
             </div>
 
             {/* Status & Reference */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 md:gap-3 p-3 md:p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
               <div>
                 <span className="text-[10px] text-slate-500 uppercase font-mono block">
                   Application Number
@@ -396,77 +395,106 @@ Hackathon Prototype • Build What Moves India`;
                   ETA Status
                 </span>
                 <span className="text-xs font-bold text-emerald-400 flex items-center">
-                  <CheckCircle2 className="w-3 h-3 mr-1" /> GRANTED (SIMULATION)
+                  <CheckCircle2 className="w-3 h-3 mr-1 shrink-0" /> GRANTED (SIMULATION)
                 </span>
               </div>
               <div>
                 <span className="text-[10px] text-slate-500 uppercase font-mono block">
-                  Visa Sub-Category
+                  Designated Entry Port
                 </span>
-                <span className="text-xs font-bold text-amber-300">
+                <span className="text-xs font-bold text-white">
+                  {data.travel_details.port_of_arrival || "Designated ICP"}
+                </span>
+              </div>
+            </div>
+
+            {/* Traveler & Bio-Data Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 md:gap-3 text-xs">
+              <div className="p-2.5 rounded-lg bg-slate-900/40 border border-slate-800/80">
+                <span className="text-[10px] text-slate-500 block">Full Name</span>
+                <span className="font-bold text-white uppercase text-[11px] md:text-xs">
+                  {data.traveler.given_name} {data.traveler.surname}
+                </span>
+              </div>
+
+              <div className="p-2.5 rounded-lg bg-slate-900/40 border border-slate-800/80">
+                <span className="text-[10px] text-slate-500 block">Passport Number</span>
+                <span className="font-mono font-bold text-cyan-300 uppercase text-[11px] md:text-xs">
+                  {data.traveler.passport_number}
+                </span>
+              </div>
+
+              <div className="p-2.5 rounded-lg bg-slate-900/40 border border-slate-800/80">
+                <span className="text-[10px] text-slate-500 block">Nationality</span>
+                <span className="font-medium text-white truncate block text-[11px] md:text-xs">
+                  {data.traveler.nationality}
+                </span>
+              </div>
+
+              <div className="p-2.5 rounded-lg bg-slate-900/40 border border-slate-800/80">
+                <span className="text-[10px] text-slate-500 block">Date of Birth</span>
+                <span className="font-mono text-slate-200 text-[11px] md:text-xs">
+                  {data.traveler.date_of_birth}
+                </span>
+              </div>
+            </div>
+
+            {/* Visa Sub-Category & Validity */}
+            <div className="p-3 md:p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <span className="text-[10px] uppercase font-mono text-amber-400 font-bold block">
+                  Granted Visa Sub-Category
+                </span>
+                <span className="text-xs md:text-sm font-bold text-amber-300">
                   {data.travel_details.visa_type}
                 </span>
               </div>
-            </div>
-
-            {/* Bio-Data Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5 text-xs">
-              <div className="flex justify-between py-1 border-b border-slate-800/80">
-                <span className="text-slate-400">Given Name(s):</span>
-                <span className="font-bold text-white uppercase">{data.traveler.given_name}</span>
-              </div>
-              <div className="flex justify-between py-1 border-b border-slate-800/80">
-                <span className="text-slate-400">Surname / Family Name:</span>
-                <span className="font-bold text-white uppercase">{displaySurname}</span>
-              </div>
-              <div className="flex justify-between py-1 border-b border-slate-800/80">
-                <span className="text-slate-400">Passport Number:</span>
-                <span className="font-mono font-bold text-cyan-300">{data.traveler.passport_number}</span>
-              </div>
-              <div className="flex justify-between py-1 border-b border-slate-800/80">
-                <span className="text-slate-400">Nationality:</span>
-                <span className="font-semibold text-white">{data.traveler.nationality}</span>
-              </div>
-              <div className="flex justify-between py-1 border-b border-slate-800/80">
-                <span className="text-slate-400">Date of Birth:</span>
-                <span className="font-mono text-white">{data.traveler.date_of_birth}</span>
-              </div>
-              <div className="flex justify-between py-1 border-b border-slate-800/80">
-                <span className="text-slate-400">Port of Entry:</span>
-                <span className="font-semibold text-amber-300">{data.travel_details.port_of_arrival}</span>
+              <div className="text-left sm:text-right">
+                <span className="text-[10px] text-slate-400 block font-mono">Simulated Validity</span>
+                <span className="text-[11px] md:text-xs font-semibold text-emerald-400">
+                  Valid for Single/Double Entry
+                </span>
               </div>
             </div>
 
-            {/* Reference in India Callout */}
-            <div className="p-3 rounded-lg bg-emerald-950/30 border border-emerald-500/30 text-xs space-y-1">
-              <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider flex items-center">
-                <Building className="w-3 h-3 mr-1" /> Mandatory Reference in India
+            {/* Reference in India Section */}
+            <div className="p-3 md:p-3.5 rounded-xl bg-slate-900 border border-slate-800 space-y-1">
+              <span className="text-[10px] text-slate-500 uppercase font-mono block">
+                Mandatory Indian Reference / Hotel / Host
               </span>
-              <div className="text-white font-semibold">{data.reference_in_india.name}</div>
-              <div className="text-slate-300 text-[11px]">{displayAddress}</div>
-              <div className="text-cyan-300 text-[11px] font-mono">Tel: {data.reference_in_india.phone}</div>
+              <p className="text-xs font-semibold text-white">
+                {data.reference_in_india.name}
+              </p>
+              <p className="text-[11px] text-slate-400 leading-tight">
+                {data.reference_in_india.address}
+              </p>
+              {data.reference_in_india.phone && (
+                <p className="text-[11px] font-mono text-cyan-400">
+                  Tel: {data.reference_in_india.phone}
+                </p>
+              )}
             </div>
 
-            {/* ICAO MRZ Preview */}
+            {/* Raw MRZ Parity Strip on Certificate */}
             {data.mrz_data?.raw_mrz_string && (
-              <div className="p-3 rounded-lg bg-slate-950 border border-cyan-500/20 font-mono text-[10px] text-cyan-300 tracking-[0.15em] leading-relaxed overflow-x-auto">
-                <div>{displayMrz1}</div>
-                <div>{displayMrz2}</div>
+              <div className="p-2.5 md:p-3 rounded-xl bg-slate-950 border border-slate-800 font-mono text-[10px] md:text-[11px] text-cyan-300 overflow-x-auto space-y-0.5 tracking-widest">
+                <div className="whitespace-pre">{displayMrz1}</div>
+                <div className="whitespace-pre">{displayMrz2}</div>
               </div>
             )}
           </div>
 
-          {/* Modal Action Buttons: Multi-format DPI delivery */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-            <div className="flex items-center space-x-1.5 text-xs text-slate-400">
+          {/* Modal Footer Controls */}
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1 md:pt-2">
+            <div className="hidden sm:flex items-center space-x-1.5 text-xs text-slate-400">
               <Info className="w-4 h-4 text-cyan-400 shrink-0" />
               <span>DPI delivery options: High-res PDF or low-data offline QR pass.</span>
             </div>
 
-            <div className="flex flex-wrap items-center gap-2.5 w-full sm:w-auto">
+            <div className="flex flex-col sm:flex-row items-center gap-2.5 w-full sm:w-auto">
               <button
                 onClick={handleGenerateQrPass}
-                className="flex-1 sm:flex-none flex items-center justify-center space-x-1.5 px-4 py-2.5 rounded-xl text-xs font-bold text-cyan-300 bg-cyan-950/60 border border-cyan-500/30 hover:bg-cyan-900/60 transition-colors"
+                className="w-full sm:w-auto flex items-center justify-center space-x-1.5 px-4 py-3 md:py-2.5 rounded-xl text-xs font-bold text-cyan-300 bg-cyan-950/60 border border-cyan-500/30 hover:bg-cyan-900/60 transition-colors min-h-[44px]"
               >
                 <QrCode className="w-4 h-4 text-cyan-400" />
                 <span>Get Offline QR / SMS</span>
@@ -474,7 +502,7 @@ Hackathon Prototype • Build What Moves India`;
 
               <button
                 onClick={downloadPdf}
-                className="flex-1 sm:flex-none flex items-center justify-center space-x-2 px-5 py-2.5 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 hover:bg-amber-400 transition-all shadow-lg shadow-amber-500/20"
+                className="w-full sm:w-auto flex items-center justify-center space-x-2 px-5 py-3 md:py-2.5 rounded-xl text-xs font-bold bg-amber-500 text-slate-950 hover:bg-amber-400 transition-all shadow-lg shadow-amber-500/20 min-h-[44px]"
               >
                 <Download className="w-4 h-4" />
                 <span>Download Full PDF ETA</span>
