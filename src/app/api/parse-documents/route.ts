@@ -9,6 +9,7 @@ import { SYNTHETIC_FIXTURES } from '@/lib/fixtures';
 export const maxDuration = 60;
 
 const EVisaExtractionSchema = z.object({
+  is_valid_document: z.boolean().describe("CRITICAL: Set to true ONLY if a real passport and itinerary are detected. Set to false for random images, menus, or unrelated PDFs."),
   traveler: z.object({
     given_name: z.string(),
     surname: z.string().describe("Extract ONLY the legal family name. Exclude headers, file names, or travel phrases like FLIGHT ROUTE."),
@@ -119,7 +120,7 @@ export async function POST(request: Request) {
         messages: [
           {
             role: "system",
-            content: "You are an expert Indian Immigration AI for Project Atithi. Extract bio-data cleanly without document headers. Cross-reference the itinerary to deduce visa class and local reference with state, district, and phone number.",
+            content: "You are a strict Indian Immigration AI Bouncer. FIRST, check if the files are a legitimate passport and travel itinerary. If they are random junk, set is_valid_document to false. If valid, extract the bio-data and cross-reference the itinerary.",
           },
           { role: "user", content: userContent },
         ],
@@ -128,6 +129,13 @@ export async function POST(request: Request) {
 
       const parsedData = response.choices[0]?.message?.parsed;
       if (!parsedData) throw new Error("Model failed to parse into e-Visa schema.");
+
+      if (parsedData.is_valid_document === false) {
+        return NextResponse.json({ 
+          success: false, 
+          error: "Documents did not meet required metrics. Please upload a valid passport bio-page and travel itinerary." 
+        }, { status: 400 });
+      }
 
       // Ensure full raw_mrz_string is present
       if (!parsedData.mrz_data.raw_mrz_string && parsedData.mrz_data.raw_mrz_string_line_2) {
